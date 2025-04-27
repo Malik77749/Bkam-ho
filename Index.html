@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>بكم هو - متجر إلكترونيات ومنتجات تجميل</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- إضافة مكتبة SheetJS لقراءة ملفات Excel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -22,6 +25,9 @@
   <section id="home">
     <h1>مرحبًا بك في متجر بكم هو</h1>
     <p>اكتشف أحدث الإلكترونيات، الجوالات، الإكسسوارات، والتجميل بأسعار منافسة.</p>
+
+    <!-- زر لتحميل ملف Excel -->
+    <input type="file" id="excelFile" onchange="handleFile(event)" />
   </section>
 
   <!-- Electronics Section -->
@@ -30,19 +36,19 @@
     <div class="category">
       <h3>إلكترونيات منزلية</h3>
       <div class="products" id="home-electronics">
-        <!-- Products will be added here -->
+        <!-- المنتجات ستضاف هنا -->
       </div>
     </div>
     <div class="category">
       <h3>جوالات</h3>
       <div class="products" id="mobile-phones">
-        <!-- Products will be added here -->
+        <!-- المنتجات ستضاف هنا -->
       </div>
     </div>
     <div class="category">
       <h3>إكسسوارات</h3>
       <div class="products" id="accessories">
-        <!-- Products will be added here -->
+        <!-- المنتجات ستضاف هنا -->
       </div>
     </div>
   </section>
@@ -53,7 +59,7 @@
     <div class="category">
       <h3>كريمات</h3>
       <div class="products" id="creams">
-        <!-- Products will be added here -->
+        <!-- المنتجات ستضاف هنا -->
       </div>
     </div>
   </section>
@@ -64,5 +70,33 @@
     <p>إذا كان لديك أي استفسار، لا تتردد في التواصل معنا!</p>
   </section>
 
+  <script>
+    function handleFile(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const data = e.target.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(sheet);
+
+        // عرض المنتجات في القسم المناسب
+        json.forEach(product => {
+          const productHTML = `
+            <div class="product">
+              <h4>${product.name}</h4>
+              <p>السعر: ${product.price}</p>
+              <a href="${product.link}">رابط المنتج</a>
+            </div>
+          `;
+          // يمكن تغيير "home-electronics" إلى أي قسم تريد عرض المنتجات فيه
+          document.getElementById('home-electronics').innerHTML += productHTML;
+        });
+      };
+
+      reader.readAsBinaryString(file);
+    }
+  </script>
 </body>
 </html>
