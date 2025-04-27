@@ -28,21 +28,15 @@
     <h2>إلكترونيات</h2>
     <div class="category">
       <h3>إلكترونيات منزلية</h3>
-      <div class="products" id="home-electronics">
-        <!-- المنتجات ستضاف هنا -->
-      </div>
+      <div class="products" id="home-electronics"></div>
     </div>
     <div class="category">
       <h3>جوالات</h3>
-      <div class="products" id="mobile-phones">
-        <!-- المنتجات ستضاف هنا -->
-      </div>
+      <div class="products" id="mobile-phones"></div>
     </div>
     <div class="category">
       <h3>إكسسوارات</h3>
-      <div class="products" id="accessories">
-        <!-- المنتجات ستضاف هنا -->
-      </div>
+      <div class="products" id="accessories"></div>
     </div>
   </section>
 
@@ -50,9 +44,7 @@
     <h2>منتجات التجميل</h2>
     <div class="category">
       <h3>كريمات</h3>
-      <div class="products" id="creams">
-        <!-- المنتجات ستضاف هنا -->
-      </div>
+      <div class="products" id="creams"></div>
     </div>
   </section>
 
@@ -77,16 +69,25 @@
             <div class="product">
               <h4>${product.name}</h4>
               <p>السعر: ${product.price}</p>
-              <img src="${product.link}" alt="${product.name}" />
               <a href="${product.link}">رابط المنتج</a>
+              <img src="${product.image}" alt="${product.name}" />
             </div>
           `;
-          document.getElementById('home-electronics').innerHTML += productHTML;
+          if (product.category === "Electronics Home") {
+            document.getElementById('home-electronics').innerHTML += productHTML;
+          } else if (product.category === "Mobile Phones") {
+            document.getElementById('mobile-phones').innerHTML += productHTML;
+          } else if (product.category === "Accessories") {
+            document.getElementById('accessories').innerHTML += productHTML;
+          } else if (product.category === "Creams") {
+            document.getElementById('creams').innerHTML += productHTML;
+          }
         });
       };
 
       reader.readAsBinaryString(file);
     }
   </script>
+
 </body>
 </html>
